@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SIG</title>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.1/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="leaflet-search-master//src/leaflet-search.css" />
+
+    <style type="text/css">
+
+		#map{
+			height:100vh;
+		}
+	</style>
+</head>
+    <body>
+        <div id="map"></div>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+    <script src="leaflet-search-master/src/leaflet-search.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.1/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+
+        <script type="text/javascript">
+            var rs = [
+            {"loc":[-5.4089589,104.8899971], "title":"Kantor Pos Ambarawa"},
+            {"loc":[-5.4086091,104.8899969], "title":"Kantor Pos Pardasuka"},
+            {"loc":[-5.368676,104.8967932], "title":"Kantor Pos Patoman"},
+            {"loc":[-5.302994198999954, 104.982265641000083], "title":"Kantor Pos Sukoharjo"},
+            {"loc":[-5.354730846999928, 104.970458314000041], "title":"Kantor Pos Pringsewu"},
+            {"loc":[-5.375200045999975, 105.067985136000061], "title":"Kantor Pos Gadingrejo"}
+            ];
+            var mymap = new L.map('map').setView([-5.373476204876448, 105.2916931944117], 14);
+            mymap.addLayer(new L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+            }));
+            
+            L.control.locate().addTo(mymap);
+            var markersLayer = new L.LayerGroup();	//layer contain searched elements
+        
+            mymap.addLayer(markersLayer);
+            var controlSearch = new L.Control.Search({
+                position:'topleft',		
+                layer: markersLayer,
+                initial: false,
+                zoom: 20,
+                marker: false
+            });
+            mymap.addControl( controlSearch );
+            for(i in rs){
+                var title = rs[i].title;	//value searched
+                var loc = rs[i].loc;	//position found
+                var marker = new L.Marker(new L.latLng(loc), {title: title} );//se property searched
+                marker.bindPopup( title );
+                markersLayer.addLayer(marker);
+            }
+            
+
+        </script>
+    
+    </body>
+</html>
